@@ -92,23 +92,6 @@ The client provides a terminal-based interface with:
 - `/clear` - Clear the chat history
 - `/help` - Show available commands
 
-## Project Structure
-
-```
-secure_chat/
-├── cmd/
-│   ├── client/
-│   │   └── main.go          # Client application
-│   └── server/
-│       └── main.go          # Server application
-├── go.mod                   # Go module definition
-├── go.sum                   # Dependency checksums
-├── Dockerfile               # Docker build configuration
-├── docker-compose.yml       # Docker Compose configuration
-├── .gitignore              # Git ignore rules
-└── .dockerignore           # Docker ignore rules
-```
-
 ## Dependencies
 
 - [gin-gonic/gin](https://github.com/gin-gonic/gin) - HTTP web framework
@@ -143,12 +126,7 @@ cd cmd/client && go build -o ../../client
 4. Test thoroughly
 5. Submit a pull request
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgments
 
 - Built with Go for performance and concurrency
-- Uses industry-standard PGP encryption for security
-- Terminal UI provides cross-platform compatibility
+- Uses industry-standard PGP encryption for security (via ProtonMail's gopenpgp)
