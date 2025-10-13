@@ -21,16 +21,16 @@ A secure, end-to-end encrypted chat application built with Go, featuring a termi
 1. **Start the Server:**
 
    ```bash
-   go run ./server/main.go
+   go run ./server
    ```
 
 2. **Start Clients:**
    ```bash
-   go run ./client/main.go
+   go run ./client
    ```
    Or specify a username:
    ```bash
-   go run ./client/main.go username
+   go run ./client username
    ```
 
 ### Using Docker
@@ -46,7 +46,7 @@ A secure, end-to-end encrypted chat application built with Go, featuring a termi
 
 2. **Run clients locally:**
    ```bash
-   go run ./client/main.go
+   go run ./client
    ```
 
 ### Configuration
