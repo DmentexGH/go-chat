@@ -112,20 +112,6 @@ cd cmd/server && go build -o ../../server
 cd cmd/client && go build -o ../../client
 ```
 
-## Configuration
-
-- **Server Port**: Defaults to 8080 (configurable in server code)
-- **WebSocket Endpoint**: `/ws`
-- **Client Connection**: `ws://localhost:8080/ws`
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
 ## Acknowledgments
 
 - Built with Go for performance and concurrency
