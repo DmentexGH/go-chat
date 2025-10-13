@@ -32,7 +32,3 @@ Thumbs.db
 
 # Environment files
 .env
-
-# Build artifacts
-server
-client
