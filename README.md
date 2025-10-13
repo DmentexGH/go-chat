@@ -100,18 +100,6 @@ The client provides a terminal-based interface with:
 - [gdamore/tcell](https://github.com/gdamore/tcell) - Terminal cell library
 - [ProtonMail/gopenpgp](https://github.com/ProtonMail/gopenpgp) - PGP encryption library
 
-## Development
-
-### Building from Source
-
-```bash
-# Build server
-cd cmd/server && go build -o ../../server
-
-# Build client
-cd cmd/client && go build -o ../../client
-```
-
 ## Acknowledgments
 
 - Built with Go for performance and concurrency
