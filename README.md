@@ -12,7 +12,7 @@ A secure, end-to-end encrypted chat application built with Go, featuring a termi
 - 🖥️ **Terminal UI** - Clean, responsive terminal interface built with tview
 - 🐳 **Docker Support** - Easy deployment with Docker
 - 🔑 **Automatic Key Management** - PGP key pairs generated and exchanged automatically
-- 🗑️ **Ephemeral Communication** - No message storage on server, keys deleted on exit
+- 🗑️ **Ephemeral Communication** - Server just routes messages, no storage of them by design. When a user disconnects, no trace remains (keys deleted, everyone's chat is cleared).
 
 ## Quick Start
 

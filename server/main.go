@@ -126,7 +126,8 @@ func handleWS(c *gin.Context) {
 
 func main() {
 	gin.SetMode(gin.ReleaseMode)
-	r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Recovery())
 	r.GET("/ws", handleWS)
 	log.Println("Server running on :8080")
 	r.Run(":8080")

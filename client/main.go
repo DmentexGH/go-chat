@@ -265,8 +265,7 @@ func (c *Client) sendMessage(message string) {
 			return
 		}
 	}
-
-	// Send message to all users
+	// If no other users, notify and return
 	if len(c.publicKeys) == 0 {
 		c.textView.Write([]byte("[yellow]No other users connected to send messages to[white]\n"))
 		return
