@@ -6,15 +6,12 @@ A secure, end-to-end encrypted chat application built with Go, featuring a termi
 
 ## Features
 
-- 🔒 **End-to-End Encryption** - Messages encrypted client-side using PGP, only decrypted by recipients
-- 💬 **Real-time Chat** - Instant messaging with WebSocket connections using gorilla/websocket
-- 👥 **Multi-user Support** - Connect multiple users with automatic user discovery and management
-- 🖥️ **Terminal UI** - Clean, responsive terminal interface built with tview and tcell
-- 🐳 **Docker Support** - Easy deployment with optimized Docker image (~14MB)
-- 🔑 **Automatic Key Management** - PGP key pairs generated per user and exchanged automatically
-- 🗑️ **Ephemeral Communication** - Server routes encrypted messages only, no storage by design.
-- 🚀 **Lightweight Server** - Built with standard net/http package for minimal dependencies
-- 📝 **Command Support** - Built-in commands (/clear, /help) for chat management
+- 🔒 **End-to-End Encryption** - PGP encryption with automatic key management
+- 💬 **Real-time Chat** - WebSocket-based messaging with live user list
+- 🖥️ **Terminal UI** - Clean interface built with tview and tcell
+- 🐳 **Docker Support** - Optimized deployment (~14MB image)
+- � **Lightweight** - Minimal dependencies using standard net/http
+- 🗑️ **Ephemeral** - No message storage, server only routes encrypted data
 
 ## Quick Start
 
@@ -37,19 +34,14 @@ A secure, end-to-end encrypted chat application built with Go, featuring a termi
 
 ### Using Docker
 
-1. **Build and run the server:**
+```bash
+docker build -t secure-chat-server .
+docker run -p 8080:8080 secure-chat-server
+```
 
-   ```bash
-   docker build -t secure-chat-server .
-   docker run -p 8080:8080 secure-chat-server
-   ```
+**Image size**: ~14MB
 
-   The final Docker image is optimized and weighs **~22MB**.
-
-2. **Run clients locally:**
-   ```bash
-   go run ./client
-   ```
+Run clients locally: `go run ./client`
 
 ### Configuration
 
@@ -65,33 +57,21 @@ cp .env.example .env
 
 ## How It Works
 
-### Security Architecture
-
-- **End-to-End Encryption**: Messages encrypted client-side, only decrypted by recipients
-- **No Server Access**: Server routes encrypted messages but cannot read content
-- **No Message Storage**: Server doesn't save messages - all communication is ephemeral
-- **Automatic Key Management**: PGP key pairs generated per user, deleted on exit
-
-### Communication Flow
-
 1. **Connection**: Client generates PGP key pair on startup
-2. **Key Exchange**: Public keys automatically shared between all users
-3. **Messaging**: Messages encrypted for each recipient using their public key
-4. **Decryption**: Each user decrypts messages using their private key
+2. **Key Exchange**: Public keys automatically shared between users
+3. **Messaging**: Messages encrypted for each recipient
+4. **Decryption**: Each user decrypts with their private key
+5. **Cleanup**: When a user disconnects, their keys are deleted and the chat history is cleared from the UI for everyone
+
+**Security**: Server only routes encrypted messages - cannot read content or store data
 
 ## Usage
 
-### Client Interface
+**Interface**: Chat area, live user list, and input field
 
-The client provides a terminal-based interface with:
+**Commands**:
 
-- **Chat Area**: Displays messages from all users
-- **Users List**: Shows all connected users
-- **Input Field**: Type messages to send to all users
-
-### Commands
-
-- `/clear` - Clear the chat history
+- `/clear` - Clear chat history
 - `/help` - Show available commands
 
 ## Dependencies
@@ -103,6 +83,4 @@ The client provides a terminal-based interface with:
 
 ## Acknowledgments
 
-- Built with Go for performance and concurrency
-- Uses standard `net/http` package for lightweight HTTP handling
-- Uses industry-standard PGP encryption for security (via ProtonMail's gopenpgp)
+Built with Go, using standard `net/http` and ProtonMail's gopenpgp for PGP encryption
