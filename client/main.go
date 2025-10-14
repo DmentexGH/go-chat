@@ -12,6 +12,7 @@ import (
 	"github.com/ProtonMail/gopenpgp/v3/profile"
 	"github.com/gdamore/tcell/v2"
 	"github.com/gorilla/websocket"
+	"github.com/joho/godotenv"
 	"github.com/rivo/tview"
 )
 
@@ -379,10 +380,15 @@ func main() {
 		username = os.Args[1]
 	}
 
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Println("No .env file found")
+	}
+
 	// Get server URL from environment variable or use default
 	serverURL := os.Getenv("SERVER_URL")
 	if serverURL == "" {
-		serverURL = "ws://4.tcp.eu.ngrok.io:18251/ws"
+		serverURL = "ws://localhost:8080/ws"
 	}
 
 	client := NewClient()
