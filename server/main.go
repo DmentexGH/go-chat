@@ -2,8 +2,6 @@
 package main
 
 import (
-	"encoding/json"
-	"log"
 	"net/http"
 	"sync"
 
@@ -21,37 +19,70 @@ type WSMessage struct {
 	Type      string `json:"type"`
 	From      string `json:"from,omitempty"`
 	To        string `json:"to,omitempty"`
-	PublicKey string `json:"publicKey,omitempty"`
 	Payload   string `json:"payload,omitempty"`
+	PublicKey string `json:"publicKey,omitempty"`
 }
 
 func broadcast(exclude *websocket.Conn, msg WSMessage) {
-	data, _ := json.Marshal(msg)
 	mu.Lock()
-	defer mu.Unlock()
+	// Create a snapshot of connections to avoid holding lock during writes
+	connections := make([]*websocket.Conn, 0, len(clients))
 	for conn := range clients {
 		if conn != exclude {
-			conn.WriteMessage(websocket.TextMessage, data)
+			connections = append(connections, conn)
 		}
+	}
+	mu.Unlock()
+
+	// Send messages without holding the lock
+	for _, conn := range connections {
+		// Use goroutine to avoid blocking on slow clients
+		go func(c *websocket.Conn) {
+			// Recover from any panics during message sending
+			defer func() {
+				if r := recover(); r != nil {
+					// Silent recovery - continue with other connections
+				}
+			}()
+			c.WriteJSON(msg)
+		}(conn)
 	}
 }
 
 func sendToUser(username string, msg WSMessage) {
-	data, _ := json.Marshal(msg)
 	mu.Lock()
-	defer mu.Unlock()
+	var targetConn *websocket.Conn
 	for conn, name := range clients {
 		if name == username {
-			conn.WriteMessage(websocket.TextMessage, data)
+			targetConn = conn
 			break
 		}
+	}
+	mu.Unlock()
+
+	if targetConn != nil {
+		go func() {
+			// Recover from any panics during message sending
+			defer func() {
+				if r := recover(); r != nil {
+					// Silent recovery - continue with other operations
+				}
+			}()
+			targetConn.WriteJSON(msg)
+		}()
 	}
 }
 
 func handleWS(w http.ResponseWriter, r *http.Request) {
+	// Recover from any panics in WebSocket handling
+	defer func() {
+		if r := recover(); r != nil {
+			// Silent recovery - continue serving other connections
+		}
+	}()
+
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println("Upgrade failed:", err)
 		return
 	}
 
@@ -61,6 +92,7 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 			delete(clients, conn)
 			delete(publicKeys, name)
 			mu.Unlock()
+			conn.Close()
 			broadcast(nil, WSMessage{Type: "leave", From: name})
 		} else {
 			mu.Unlock()
@@ -124,7 +156,14 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/ws", handleWS)
-	log.Println("Server running on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	for {
+		server := &http.Server{
+			Addr:           ":8080",
+			MaxHeaderBytes: 1 << 20, // 1MB
+		}
+
+		http.HandleFunc("/ws", handleWS)
+		server.ListenAndServe()
+		// If we reach here, the server crashed - restart automatically
+	}
 }

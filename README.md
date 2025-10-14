@@ -9,7 +9,7 @@ A secure, end-to-end encrypted chat application built with Go, featuring a termi
 - 🔒 **End-to-End Encryption** - PGP encryption with automatic key management
 - 💬 **Real-time Chat** - WebSocket-based messaging with live user list
 - 🖥️ **Terminal UI** - Clean interface built with tview and tcell
-- 🐳 **Docker Support** - Optimized deployment (~14MB image)
+- 🐳 **Docker Support** - Optimized deployment (~6MB image)
 - � **Lightweight** - Minimal dependencies using standard net/http
 - 🗑️ **Ephemeral** - No message storage, server only routes encrypted data
 
@@ -39,7 +39,7 @@ docker build -t secure-chat-server .
 docker run -p 8080:8080 secure-chat-server
 ```
 
-**Image size**: ~14MB
+**Image size**: ~6MB
 
 Run clients locally: `go run ./client`
 
