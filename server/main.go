@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
@@ -49,8 +48,8 @@ func sendToUser(username string, msg WSMessage) {
 	}
 }
 
-func handleWS(c *gin.Context) {
-	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+func handleWS(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("Upgrade failed:", err)
 		return
@@ -125,10 +124,7 @@ func handleWS(c *gin.Context) {
 }
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
-	r := gin.New()
-	r.Use(gin.Recovery())
-	r.GET("/ws", handleWS)
+	http.HandleFunc("/ws", handleWS)
 	log.Println("Server running on :8080")
-	r.Run(":8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

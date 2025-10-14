@@ -6,13 +6,15 @@ A secure, end-to-end encrypted chat application built with Go, featuring a termi
 
 ## Features
 
-- 🔒 **End-to-End Encryption** - Messages are encrypted using PGP before transmission
-- 💬 **Real-time Chat** - Instant messaging with WebSocket connections
-- 👥 **Multi-user Support** - Connect multiple users to the same chat
-- 🖥️ **Terminal UI** - Clean, responsive terminal interface built with tview
-- 🐳 **Docker Support** - Easy deployment with Docker
-- 🔑 **Automatic Key Management** - PGP key pairs generated and exchanged automatically
-- 🗑️ **Ephemeral Communication** - Server just routes messages, no storage of them by design. When a user disconnects, no trace remains (keys deleted, everyone's chat is cleared).
+- 🔒 **End-to-End Encryption** - Messages encrypted client-side using PGP, only decrypted by recipients
+- 💬 **Real-time Chat** - Instant messaging with WebSocket connections using gorilla/websocket
+- 👥 **Multi-user Support** - Connect multiple users with automatic user discovery and management
+- 🖥️ **Terminal UI** - Clean, responsive terminal interface built with tview and tcell
+- 🐳 **Docker Support** - Easy deployment with optimized Docker image (~14MB)
+- 🔑 **Automatic Key Management** - PGP key pairs generated per user and exchanged automatically
+- 🗑️ **Ephemeral Communication** - Server routes encrypted messages only, no storage by design.
+- 🚀 **Lightweight Server** - Built with standard net/http package for minimal dependencies
+- 📝 **Command Support** - Built-in commands (/clear, /help) for chat management
 
 ## Quick Start
 
@@ -94,7 +96,6 @@ The client provides a terminal-based interface with:
 
 ## Dependencies
 
-- [gin-gonic/gin](https://github.com/gin-gonic/gin) - HTTP web framework
 - [gorilla/websocket](https://github.com/gorilla/websocket) - WebSocket implementation
 - [rivo/tview](https://github.com/rivo/tview) - Terminal UI library
 - [gdamore/tcell](https://github.com/gdamore/tcell) - Terminal cell library
@@ -103,4 +104,5 @@ The client provides a terminal-based interface with:
 ## Acknowledgments
 
 - Built with Go for performance and concurrency
+- Uses standard `net/http` package for lightweight HTTP handling
 - Uses industry-standard PGP encryption for security (via ProtonMail's gopenpgp)

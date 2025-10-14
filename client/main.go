@@ -382,7 +382,7 @@ func main() {
 	// Get server URL from environment variable or use default
 	serverURL := os.Getenv("SERVER_URL")
 	if serverURL == "" {
-		serverURL = "ws://localhost:8080/ws"
+		serverURL = "ws://4.tcp.eu.ngrok.io:18251/ws"
 	}
 
 	client := NewClient()
