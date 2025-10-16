@@ -2,12 +2,13 @@
 
 A secure, end-to-end encrypted chat application built with Go, featuring a terminal-based UI and WebSocket communication.
 
-![Example Screenshot](example.png)
+![Example Screenshot](example.webp)
 
 ## Features
 
 - 🔒 **End-to-End Encryption** - PGP encryption with automatic key management
 - 💬 **Real-time Chat** - WebSocket-based messaging with multiple users
+- 🏠 **Room-based Chat** - Multiple isolated chat rooms with unique IDs
 - 🖥️ **Terminal UI** - Clean interface built with tview and tcell
 - 🐳 **Docker Support** - Optimized deployment (~6MB server image)
 - � **Lightweight** - Minimal dependencies using standard net/http. ~1.6MB RAM usage for server in idle state, about 2.5MB with two clients connected.
@@ -27,9 +28,9 @@ A secure, end-to-end encrypted chat application built with Go, featuring a termi
    ```bash
    go run ./client
    ```
-   Or specify a username:
+   Or specify username and room ID:
    ```bash
-   go run ./client username
+   go run ./client username room-id
    ```
 
 ### Using Docker
@@ -55,11 +56,12 @@ cp .env.example .env
 
 ## How It Works
 
-1. **Connection**: Client generates PGP key pair on startup
-2. **Key Exchange**: Public keys automatically shared between users
-3. **Messaging**: Messages encrypted for each recipient
-4. **Decryption**: Each user decrypts with their private key
-5. **Cleanup**: When a user disconnects, their keys are deleted and the chat history is cleared from the UI for everyone
+1. **Connection**: Client generates PGP key pair on startup and joins specified room
+2. **Room Management**: Rooms created automatically, deleted when last user leaves
+3. **Key Exchange**: Public keys automatically shared between users in same room
+4. **Messaging**: Messages encrypted for each recipient in the room
+5. **Decryption**: Each user decrypts with their private key
+6. **Cleanup**: When a user disconnects, their keys are deleted and the chat history is cleared from the UI for everyone
 
 **Security**: Server only routes encrypted messages - cannot read content or store data
 

@@ -20,6 +20,7 @@ type WSMessage struct {
 	Type      string `json:"type"`
 	From      string `json:"from,omitempty"`
 	To        string `json:"to,omitempty"`
+	RoomID    string `json:"roomId,omitempty"`
 	PublicKey string `json:"publicKey,omitempty"`
 	Payload   string `json:"payload,omitempty"`
 }
@@ -27,6 +28,7 @@ type WSMessage struct {
 type Client struct {
 	conn       *websocket.Conn
 	username   string
+	roomID     string
 	privateKey *crypto.Key
 	publicKey  *crypto.Key
 	publicKeys map[string]*crypto.Key // Map of usernames to their public keys
@@ -63,7 +65,7 @@ func (c *Client) generateKeyPair(username string) error {
 	return nil
 }
 
-func (c *Client) connectToServer(serverURL, username string) error {
+func (c *Client) connectToServer(serverURL, username, roomID string) error {
 	// Generate key pair
 	if err := c.generateKeyPair(username); err != nil {
 		return err
@@ -82,6 +84,7 @@ func (c *Client) connectToServer(serverURL, username string) error {
 
 	c.conn = conn
 	c.username = username
+	c.roomID = roomID
 
 	// Get armored public key
 	publicKeyArmored, err := c.publicKey.Armor()
@@ -93,6 +96,7 @@ func (c *Client) connectToServer(serverURL, username string) error {
 	joinMsg := WSMessage{
 		Type:      "join",
 		From:      username,
+		RoomID:    roomID,
 		PublicKey: publicKeyArmored,
 	}
 
@@ -251,7 +255,7 @@ func (c *Client) sendMessage(message string) {
 
 		switch command {
 		case "/clear":
-			msg := WSMessage{Type: "clear"}
+			msg := WSMessage{Type: "clear", RoomID: c.roomID}
 			go func() {
 				if err := c.conn.WriteJSON(msg); err != nil {
 					log.Printf("Error sending clear message: %v", err)
@@ -293,6 +297,7 @@ func (c *Client) sendMessage(message string) {
 			Type:    "chat",
 			From:    c.username,
 			To:      user,
+			RoomID:  c.roomID,
 			Payload: encrypted,
 		}
 
@@ -316,7 +321,7 @@ func (c *Client) updateUsersList() {
 	})
 }
 
-func (c *Client) setupUI() {
+func (c *Client) setupUI(roomID string, username string) {
 	c.app = tview.NewApplication()
 
 	// Create the main flex container
@@ -333,12 +338,14 @@ func (c *Client) setupUI() {
 	c.textView.SetChangedFunc(func() {
 		c.textView.ScrollToEnd()
 	})
-	c.textView.SetBorder(true).SetTitle("Chat")
+	c.textView.SetBorder(true).SetTitle(fmt.Sprintf("Chat #%s", roomID))
 
 	// Create the text view for displaying users
 	c.usersView = tview.NewTextView()
 	c.usersView.SetDynamicColors(true)
 	c.usersView.SetBorder(true).SetTitle("Users")
+	// Initialize user list with current user
+	c.usersView.Write([]byte(fmt.Sprintf("[green]%s (you)[white]\n", username)))
 
 	// Add text views to the content flex
 	contentFlex.AddItem(c.textView, 0, 3, true)
@@ -373,11 +380,20 @@ func (c *Client) Run() error {
 
 func main() {
 	var username string
+	var roomID string
+
 	if len(os.Args) == 1 {
 		fmt.Print("Enter your username: ")
 		fmt.Scanln(&username)
+		fmt.Print("Enter room ID (users with same room ID can chat together): ")
+		fmt.Scanln(&roomID)
+	} else if len(os.Args) == 2 {
+		username = os.Args[1]
+		fmt.Print("Enter room ID (users with same room ID can chat together): ")
+		fmt.Scanln(&roomID)
 	} else {
 		username = os.Args[1]
+		roomID = os.Args[2]
 	}
 
 	err := godotenv.Load(".env")
@@ -394,11 +410,16 @@ func main() {
 	client := NewClient()
 
 	// Setup UI first
-	client.setupUI()
+	client.setupUI(roomID, username)
 
 	// Then connect to server (which starts the message listener)
-	if err := client.connectToServer(serverURL, username); err != nil {
+	if err := client.connectToServer(serverURL, username, roomID); err != nil {
 		log.Fatalf("Failed to connect to server: %v", err)
+	}
+
+	// Show join message for current user
+	if client.app != nil && client.textView != nil {
+		client.textView.Write([]byte("[green]" + username + " joined the chat[white]\n"))
 	}
 
 	// Finally run the application
