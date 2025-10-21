@@ -1,4 +1,4 @@
-// server.go
+// main.go
 package main
 
 import (
@@ -30,6 +30,11 @@ type WSMessage struct {
 }
 
 func broadcast(room *Room, exclude *websocket.Conn, msg WSMessage) {
+	// Handle nil room gracefully
+	if room == nil {
+		return
+	}
+
 	room.mu.RLock()
 	// Create a snapshot of connections to avoid holding lock during writes
 	connections := make([]*websocket.Conn, 0, len(room.clients))
@@ -56,6 +61,11 @@ func broadcast(room *Room, exclude *websocket.Conn, msg WSMessage) {
 }
 
 func sendToUser(room *Room, username string, msg WSMessage) {
+	// Handle nil room gracefully
+	if room == nil {
+		return
+	}
+
 	room.mu.RLock()
 	var targetConn *websocket.Conn
 	for conn, name := range room.clients {

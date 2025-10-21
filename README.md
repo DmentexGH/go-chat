@@ -40,7 +40,24 @@ docker build -t secure-chat-server .
 docker run -p 8080:8080 secure-chat-server
 ```
 
+**Note**: The Docker build process automatically runs all server tests during the build stage. If any tests fail, the build will fail.
+
 Then start clients locally: `go run ./client`
+
+### Testing
+
+Run server tests:
+
+```bash
+# Run all tests
+cd server && go test -v
+
+# Run tests with coverage
+cd server && go test -v -cover
+
+# Tests are also automatically run during Docker builds
+docker build -t secure-chat-server .
+```
 
 ### Configuration
 

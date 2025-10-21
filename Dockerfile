@@ -4,7 +4,9 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY server/ ./server/
+RUN go test -v ./server
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags='-s -w -extldflags "-static"' -trimpath -tags netgo -installsuffix netgo -o server ./server
+
 
 FROM scratch
 WORKDIR /app
